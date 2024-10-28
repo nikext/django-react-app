@@ -69,6 +69,24 @@ function Home() {
       );
   };
 
+  const updateNote = (id, updatedData) => {
+    api
+      .patch(`/api/notes/update/${id}/`, updatedData)
+      .then((res) => {
+        if (res.status === 200) {
+          setAlert({ show: true, message: "Note updated!", type: "success" });
+          getNotes();
+        }
+      })
+      .catch(() =>
+        setAlert({
+          show: true,
+          message: "Failed to update note",
+          type: "error",
+        })
+      );
+  };
+
   return (
     <div className="home-container">
       {alert.show && (
@@ -107,7 +125,12 @@ function Home() {
         <h2>Your Notes</h2>
         <div className="notes-grid">
           {notes.map((note) => (
-            <Note note={note} onDelete={deleteNote} key={note.id} />
+            <Note
+              note={note}
+              onDelete={deleteNote}
+              onUpdate={updateNote}
+              key={note.id}
+            />
           ))}
         </div>
       </div>
